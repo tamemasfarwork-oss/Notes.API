@@ -1,0 +1,6 @@
+@NoteWepApp_HostAddress = http://localhost:5168
+
+GET {{NoteWepApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
