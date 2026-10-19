@@ -9,21 +9,19 @@ namespace NoteWepApp.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        readonly private CreateUserHandler _hanel;
-
-
-        public UserController(CreateUserHandler createUserHandler) => _hanel = createUserHandler;
+        
 
         [HttpPost]
         public async Task<IActionResult> Create(
-          CreateUserCommand cmd,
+         [FromServices] CreateUserCommand cmd,
+         [FromServices] CreateUserHandler handel,
           CancellationToken ct)
         {
             // التحقق من المدخلات قبل أي عمل
             
 
             // تسليم الأمر للمعالج، ثم الرد برقم السجل
-            var id = await _hanel.Handel(cmd, ct);
+            var id = await handel.Handel(cmd, ct);
             return Created($"/notes/{id}", new { id });
         }
     }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Notes.DAL.Data;
 using Notes.DAL.Featrue.User.Command.createuser;
+using NoteWepApp.Featrue.Caticorey.Command;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 4. تسجيل الـ Repositories الخاصة بك
 builder.Services.AddScoped<CreateUserHandler>();
 builder.Services.AddScoped<CreateUserValidator>();
-
+builder.Services.AddScoped<CreateCaticoreyHandler>();
 // 5. إضافة خدمات الأمان والتفويض (لتفادي أي مشاكل في الـ Authorization)
 builder.Services.AddAuthorization();
 

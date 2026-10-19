@@ -1,4 +1,3 @@
 <Solution>
-  <Project Path="Notes.DAL/Notes.DAL.csproj" />
   <Project Path="NoteWepApp/NoteWepApp.csproj" />
 </Solution>
