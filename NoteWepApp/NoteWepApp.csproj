@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Featrue\Caticorey\Query\" />
     <Folder Include="Featrue\User\Query\" />
   </ItemGroup>
 

@@ -1,8 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Notes.DAL.Data;
 using Notes.DAL.Featrue.User.Command.createuser;
 using NoteWepApp.Featrue.Caticorey.Command;
-
+using NoteWepApp.Featrue.Caticorey.Query;
+using NoteWepApp.Featrue.Caticorey.Query.pagedserch;
+using NoteWepApp.Featrue.Note.Command;
+using NoteWepApp.Featrue.Note.Query.GetNoteBycaidQuery;
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. إضافة خدمة الـ Controllers الخاصة بالـ API
@@ -27,7 +31,22 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 4. تسجيل الـ Repositories الخاصة بك
 builder.Services.AddScoped<CreateUserHandler>();
 builder.Services.AddScoped<CreateUserValidator>();
-builder.Services.AddScoped<CreateCaticoreyHandler>();
+builder.Services.AddScoped<CreateCaticoreyHandler>(); 
+    builder.Services.AddScoped<GetCategoriesHandel>();
+builder.Services.AddScoped<CreateNoteHandler>();
+builder.Services.AddScoped<GetNoteBycaidHandler>(); 
+    builder.Services.AddScoped<GetPagedSerchCategories>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // 5. إضافة خدمات الأمان والتفويض (لتفادي أي مشاكل في الـ Authorization)
 builder.Services.AddAuthorization();
 
@@ -43,8 +62,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
+
+var webRoot = Path.Combine(app.Environment.ContentRootPath, "wwwroot");
+Directory.CreateDirectory(webRoot);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(webRoot)
+});
+app.UseCors("AllowAngular");
+
 
 // ترتيب الـ Middlewares مهم جداً (Authentication أولاً ثم Authorization)
 app.UseAuthentication();
